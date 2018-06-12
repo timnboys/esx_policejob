@@ -681,6 +681,7 @@ function OpenIdentityCardMenu(player)
         {label = heightLabel, value = nil},
         {label = jobLabel,    value = nil},
         {label = idLabel,     value = nil},
+        {label = _U('SeatBelt Status:') .. data.seatbeltstatus, value = nil},
       }
 
       if data.drunk ~= nil then
