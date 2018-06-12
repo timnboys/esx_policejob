@@ -631,13 +631,20 @@ function OpenIdentityCardMenu(player)
       local dobLabel    = nil
       local heightLabel = nil
       local idLabel     = nil
+      local seatbeltLabel = nil
 
       if data.job.grade_label ~= nil and  data.job.grade_label ~= '' then
         jobLabel = 'Job: ' .. data.job.label .. ' - ' .. data.job.grade_label
       else
         jobLabel = 'Job: ' .. data.job.label
       end
-
+      
+      if data.seatbeltstatus ~= nil and  data.seatbeltstatus ~= '' then
+        seatbeltLabel = 'SeatBelt Status: ' .. data.seatbeltstatus
+      else
+        seatbeltLabel = 'SeatBelt Status: ' .. data.seatbeltstatus
+      end
+        
       if data.sex ~= nil then
         if (data.sex == 'm') or (data.sex == 'M') then
           sex = 'Male'
