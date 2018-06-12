@@ -140,7 +140,8 @@ ESX.RegisterServerCallback('esx_policejob:getOtherPlayerData', function(source, 
     local sex           = user['sex']
     local dob           = user['dateofbirth']
     local height        = user['height'] .. " Inches"
-
+    local seatbeltstatus = exports.fivem-seatbelt:getSeatBeltStatus()
+      
     local data = {
       name        = GetPlayerName(target),
       job         = xPlayer.job,
@@ -151,7 +152,8 @@ ESX.RegisterServerCallback('esx_policejob:getOtherPlayerData', function(source, 
       lastname    = lastname,
       sex         = sex,
       dob         = dob,
-      height      = height
+      height      = height,
+      seatbeltstatus = seatbeltstatus
     }
 
     TriggerEvent('esx_status:getStatus', target, 'drunk', function(status)
@@ -182,7 +184,8 @@ ESX.RegisterServerCallback('esx_policejob:getOtherPlayerData', function(source, 
       job        = xPlayer.job,
       inventory  = xPlayer.inventory,
       accounts   = xPlayer.accounts,
-      weapons    = xPlayer.loadout
+      weapons    = xPlayer.loadout,
+      seatbeltstatus = seatbeltstatus
     }
 
     TriggerEvent('esx_status:getStatus', target, 'drunk', function(status)
