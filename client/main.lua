@@ -339,18 +339,12 @@ function OpenVehicleSpawnerMenu(station, partNum)
 
   else
 
-	local elements = {}
-
-	local sharedVehicles = Config.AuthorizedVehicles.Shared
-	for i=1, #sharedVehicles, 1 do
-		table.insert(elements, { label = sharedVehicles[i].label, model = sharedVehicles[i].model})
-	end
-
-	local authorizedVehicles = Config.AuthorizedVehicles[PlayerData.job.grade_name]
-	for i=1, #authorizedVehicles, 1 do
-		table.insert(elements, { label = authorizedVehicles[i].label, model = authorizedVehicles[i].model})
-	end
-
+    local elements = Config.AuthorizedVehicles.Shared
+    local authorizedVehicles = Config.AuthorizedVehicles[PlayerData.job.grade_name]
+    
+    for i=1, #authorizedVehicles, 1 do
+      table.insert(elements, { label = authorizedVehicles[i].label, model = authorizedVehicles[i].model})
+    end
     ESX.UI.Menu.Open(
       'default', GetCurrentResourceName(), 'vehicle_spawner',
       {
@@ -631,20 +625,14 @@ function OpenIdentityCardMenu(player)
       local dobLabel    = nil
       local heightLabel = nil
       local idLabel     = nil
-      local seatbeltLabel = nil
+	  local seatbeltLabel = nil
 
       if data.job.grade_label ~= nil and  data.job.grade_label ~= '' then
         jobLabel = 'Job: ' .. data.job.label .. ' - ' .. data.job.grade_label
       else
         jobLabel = 'Job: ' .. data.job.label
       end
-      
-      if data.seatbeltstatus ~= nil and  data.seatbeltstatus ~= '' then
-        seatbeltLabel = 'SeatBelt Status: ' .. data.seatbeltstatus
-      else
-        seatbeltLabel = 'SeatBelt Status: ' .. data.seatbeltstatus
-      end
-        
+
       if data.sex ~= nil then
         if (data.sex == 'm') or (data.sex == 'M') then
           sex = 'Male'
@@ -660,6 +648,12 @@ function OpenIdentityCardMenu(player)
         dobLabel = 'DOB: ' .. data.dob
       else
         dobLabel = 'DOB: Unknown'
+      end
+	  --print(tostring(data))
+	  if data.seatbelt == true then
+        seatbeltLabel = 'Seatbelt: ' .. "on"
+      else
+        seatbeltLabel = 'Seatbelt Status: ' .. 'Off'
       end
 
       if data.height ~= nil then
@@ -681,7 +675,7 @@ function OpenIdentityCardMenu(player)
         {label = heightLabel, value = nil},
         {label = jobLabel,    value = nil},
         {label = idLabel,     value = nil},
-        {label = _U('SeatBelt Status:') .. data.seatbeltstatus, value = nil},
+	    {label = seatbeltLabel, value = nil},
       }
 
       if data.drunk ~= nil then
@@ -1845,7 +1839,6 @@ Citizen.CreateThread(function()
 	end
 end)
 
--- Create blip for colleagues
 function createBlip(id)
 	ped = GetPlayerPed(id)
 	blip = GetBlipFromEntity(ped)
@@ -1853,7 +1846,7 @@ function createBlip(id)
 	if not DoesBlipExist(blip) then -- Add blip and create head display on player
 		blip = AddBlipForEntity(ped)
 		SetBlipSprite(blip, 1)
-		ShowHeadingIndicatorOnBlip(blip, true) -- Player Blip indicator
+		Citizen.InvokeNative(0x5FBCA48327B914DF, blip, true) -- Player Blip indicator
 		SetBlipRotation(blip, math.ceil(GetEntityHeading(veh))) -- update rotation
 		SetBlipNameToPlayerName(blip, id) -- update blip name
 		SetBlipScale(blip, 0.85) -- set scale
@@ -1911,4 +1904,16 @@ function ImpoundVehicle(vehicle)
 	ESX.Game.DeleteVehicle(vehicle) 
 	ESX.ShowNotification(_U('impound_successful'))
 	CurrentTask.Busy = false
+end
+function openPolice()
+  if PlayerData.job ~= nil and PlayerData.job.name == 'police' and not ESX.UI.Menu.IsOpen('default', GetCurrentResourceName(), 'police_actions') and (GetGameTimer() - GUI.Time) > 150 then
+    OpenPoliceActionsMenu()
+    GUI.Time = GetGameTimer()
+  end
+end
+
+function getJob()
+  if PlayerData.job ~= nil then
+	return PlayerData.job.name
+  end
 end
