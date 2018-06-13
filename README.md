@@ -13,6 +13,9 @@
 
 * ESX License Support
   * [esx_license](https://github.com/ESX-Org/esx_license)
+  
+* To Be used with my seatbelt modification script here I redid:
+  * https://github.com/timnboys/fivem-seatbelt
 
 ## Download & Installation
 
