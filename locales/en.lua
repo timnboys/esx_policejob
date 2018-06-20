@@ -38,7 +38,10 @@ Locales['en'] = {
   ['license_check'] = 'manage license',
   ['license_revoke'] = 'revoke license',
   ['license_revoked'] = 'your ~b~%s~s~ has been ~y~revoked~s~!',
+  ['license_revoke_denied'] = 'license revokation denied! you cannot revoke licenses!',
+  ['license_revoked_denied'] = 'license revokation denied! you cannot revoke licenses!',
   ['licence_you_revoked'] = 'you revoked a ~b~%s~s~ which belonged to ~y~%s~s~',
+  ['licence_you_cannot_revoked'] = 'you cannot revoke a ~b~%s~s~ which belonged to ~y~%s~s~',
   ['no_players_nearby'] = 'no players nearby',
   -- Vehicle interaction
   ['vehicle_info'] = 'vehicle Info',
