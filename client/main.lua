@@ -474,10 +474,13 @@ function OpenPoliceActionsMenu()
 					elseif action == 'fine' then
 						OpenFineMenu(closestPlayer)
 					elseif action == 'license' then
-						ShowPlayerLicense(closestPlayer)
+						ESX.ShowNotification(_U('license_revoke_denied'))
 					end
-
 				else
+					-- local localPlayerId = PlayerId()
+					-- local serverId = GetPlayerServerId(localPlayerId)
+					-- local playerlocal = ESX.Game.GetClosestPlayer()
+					-- OpenIdentityCardMenu(PlayerId())
 					ESX.ShowNotification(_U('no_players_nearby'))
 				end
 			end, function(data2, menu2)
@@ -748,7 +751,7 @@ function OpenIdentityCardMenu(player)
           elements = elements,
         },
         function(data, menu)
-
+		
         end,
         function(data, menu)
           menu.close()
@@ -864,6 +867,29 @@ function OpenFineMenu(player)
 
 end
 
+-- function OpenDeniedMenu(player)
+
+  -- ESX.UI.Menu.Open(
+    -- 'default', GetCurrentResourceName(), 'license_revoked_denied',
+    -- {
+      -- title    = _U('license_revoked_denied'),
+      -- align    = 'top-left',
+      -- elements = {
+        -- {label = _U('licence_you_revoked'),value = 0}
+      -- },
+    -- },
+    -- function(data, menu)
+
+      -- OpenPoliceActionsMenu(player, data.current.value)
+
+    -- end,
+    -- function(data, menu)
+      -- menu.close()
+    -- end
+  -- )
+
+-- end
+
 function OpenFineCategoryMenu(player, category)
 
   ESX.TriggerServerCallback('esx_policejob:getFineList', function(fines)
@@ -938,48 +964,46 @@ function LookupVehicle()
 	)
 end
 
-function ShowPlayerLicense(player)
-	local elements = {}
-	local targetName
-	ESX.TriggerServerCallback('esx_policejob:getOtherPlayerData', function(data)
-		if data.licenses ~= nil then
-			for i=1, #data.licenses, 1 do
-				if data.licenses[i].label ~= nil and data.licenses[i].type ~= nil then
-					table.insert(elements, {label = data.licenses[i].label, value = data.licenses[i].type})
-				end
-			end
-		end
+-- function ShowPlayerLicense(player)
+	-- local elements = {}
+	-- local targetName
+	-- ESX.TriggerServerCallback('esx_policejob:getOtherPlayerData', function(data)
+		-- if data.licenses ~= nil then
+			-- for i=1, #data.licenses, 1 do
+				-- if data.licenses[i].label ~= nil and data.licenses[i].type ~= nil then
+					-- table.insert(elements, {label = data.licenses[i].label, value = data.licenses[i].type})
+				-- end
+			-- end
+		-- end
 		
-		if Config.EnableESXIdentity then
-			targetName = data.firstname .. ' ' .. data.lastname
-		else
-			targetName = data.name
-		end
-		
-		ESX.UI.Menu.Open(
-		'default', GetCurrentResourceName(), 'manage_license',
-		{
-			title    = _U('license_revoke'),
-			align    = 'top-left',
-			elements = elements,
-		},
-		function(data, menu)
-			ESX.ShowNotification(_U('licence_you_revoked', data.current.label, targetName))
-			TriggerServerEvent('esx_policejob:message', GetPlayerServerId(player), _U('license_revoked', data.current.label))
-			
-			TriggerServerEvent('esx_license:removeLicense', GetPlayerServerId(player), data.current.value)
-			
-			ESX.SetTimeout(300, function()
-				ShowPlayerLicense(player)
-			end)
-		end,
-		function(data, menu)
-			menu.close()
-		end
-		)
+		-- if Config.EnableESXIdentity then
+			-- targetName = data.firstname .. ' ' .. data.lastname
+		-- else
+			-- targetName = data.name
+		-- end
+		-- ESX.UI.Menu.Open(
+		-- 'default', GetCurrentResourceName(), 'manage_license',
+		-- {
+			-- title    = _U('license_revoke'),
+			-- align    = 'top-left',
+			-- elements = elements,
+		-- },
+		-- function(data, menu)
+			-- print("here...why doesnt this work?")
+			-- ESX.ShowNotification(_U('licence_you_revoked', data.current.label, targetName))
+			-- TriggerServerEvent('esx_policejob:message', GetPlayerServerId(player), _U('license_revoked_denied', data.current.label))
+			-- TriggerServerEvent('esx_license:removeLicensedenied', GetPlayerServerId(player), data.current.value)
+			-- ESX.SetTimeout(300, function()
+			-- OpenIdentityCardMenu()
+			-- end)
+		-- end,
+		-- function(data, menu)
+			-- menu.close()
+		-- end
+		-- )
 
-	end, GetPlayerServerId(player))
-end
+	-- end, GetPlayerServerId(player))
+-- end
 
 
 function OpenVehicleInfosMenu(vehicleData)
